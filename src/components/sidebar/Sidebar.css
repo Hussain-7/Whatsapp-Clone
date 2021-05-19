@@ -49,6 +49,9 @@
 
 .sidebar__chats {
   flex: 1;
-  background-color: blue;
+  background-color: white;
   overflow: scroll;
+}
+.sidebar__chats::-webkit-scrollbar {
+  display: none;
 }
