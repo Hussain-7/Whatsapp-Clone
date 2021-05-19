@@ -1,5 +1,11 @@
 import { Avatar, IconButton } from "@material-ui/core";
-import { AttachFile, MoreVert, SearchOutlined } from "@material-ui/icons";
+import {
+  AttachFile,
+  InsertEmoticon,
+  Mic,
+  MoreVert,
+  SearchOutlined,
+} from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import "./Chat.css";
 const Chat = () => {
@@ -27,8 +33,21 @@ const Chat = () => {
           </IconButton>
         </div>
       </div>
-      <div className="chat__body"></div>
-      <div className="chat__footer"></div>
+      <div className="chat__body">
+        <p className={`chat__message ${true && "chat__reciever"}`}>
+          <span className="chat__name">Hussain</span>
+          Hey Guys
+          <span className="chat__timestamp">3:52pm</span>
+        </p>
+      </div>
+      <div className="chat__footer">
+        <InsertEmoticon />
+        <form>
+          <input placeholder="Type a message" />
+          <button>Send a message</button>
+        </form>
+        <Mic />
+      </div>
     </div>
   );
 };
