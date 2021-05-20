@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Chat from "./components/chat/Chat";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -7,9 +8,13 @@ function App() {
     //BEM naming convention
     <div className="app">
       <div className="app__body">
-        <div className="sdsd"></div>
-        <Sidebar />
-        <Chat />
+        <Router>
+          <Sidebar />
+          <Switch>
+            <Route path="/rooms/:roomId" component={Chat} />
+            <Route path="/" />
+          </Switch>
+        </Router>
       </div>
     </div>
   );

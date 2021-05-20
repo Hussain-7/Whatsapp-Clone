@@ -7,13 +7,27 @@ import {
   SearchOutlined,
 } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import db from "../../config/firebase";
 import "./Chat.css";
 const Chat = () => {
   const [input, setInput] = useState("");
   const [seed, setSeed] = useState("");
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState("");
+
+  useEffect(() => {
+    if (roomId) {
+      db.collection("rooms")
+        .doc(roomId)
+        .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+    }
+  }, [roomId]);
+
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 500));
   }, []);
+  
   const sendMessage = (e) => {
     e.preventDefault();
     console.log(input);
@@ -24,7 +38,7 @@ const Chat = () => {
       <div className="chat__header">
         <Avatar src={`https://avatars.dicebear.com/4.5/api/male/${seed}.svg`} />
         <div className="chat__headerInfo">
-          <h3>Room Name</h3>
+          <h3>{roomName}</h3>
           <p>last seen ...</p>
         </div>
         <div className="chat__headerRight">

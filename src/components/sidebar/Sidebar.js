@@ -7,7 +7,7 @@ import db from "../../config/firebase";
 const Sidebar = () => {
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
-    db.collection("rooms").onSnapshot((snapshot) =>
+    const unsubscribe = db.collection("rooms").onSnapshot((snapshot) =>
       setRooms(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -15,6 +15,10 @@ const Sidebar = () => {
         }))
       )
     );
+    //cleanub function used for optimization
+    return () => {
+      unsubscribe();
+    };
   }, []);
   return (
     <div className="sidebar">
