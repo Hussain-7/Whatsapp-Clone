@@ -7,8 +7,6 @@ import {
   SearchOutlined,
 } from "@material-ui/icons";
 import React, { useEffect, useState, useRef } from "react";
-import Moment from "react-moment";
-import moment from "moment";
 import { useStateValue } from "../../contextApi/StateProvider";
 import { useParams } from "react-router-dom";
 import db from "../../config/firebase";
@@ -64,7 +62,27 @@ const Chat = () => {
         <Avatar src={`https://avatars.dicebear.com/4.5/api/male/${seed}.svg`} />
         <div className="chat__headerInfo">
           <h3>{roomName}</h3>
-          <p>last seen ...</p>
+          <p>
+            last seen{" "}
+            {messages && messages[messages.length - 1]?.timestamp ? (
+              <span>
+                {new Date(
+                  messages[messages.length - 1]?.timestamp?.toDate()
+                )?.toDateString()}
+                {", "}
+                {new Date(
+                  messages[messages.length - 1]?.timestamp?.toDate()
+                ).toLocaleString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  second: "numeric",
+                  hour12: true,
+                })}
+              </span>
+            ) : (
+              <span></span>
+            )}
+          </p>
         </div>
         <div className="chat__headerRight">
           <IconButton>
@@ -79,26 +97,33 @@ const Chat = () => {
         </div>
       </div>
       <div className="chat__body">
-        {messages.map((message) => (
-          <p
-            className={`chat__message ${
-              message.name === user.displayName && "chat__reciever"
-            }`}
-          >
-            <span className="chat__name">{message.name}</span>
-            {message.message}
-            <span className="chat__timestamp">
-              {/* {new Date(message.timestamp?.toDate()).toUTCString()} */}
-              {new Date(message.timestamp?.toDate())?.toDateString()}
-              {", "}
-              {new Date(message.timestamp?.toDate()).toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true,
-              })}
-            </span>
-          </p>
-        ))}
+        {messages.map((message) => {
+          return (
+            <p
+              className={`chat__message ${
+                message.name === user.displayName && "chat__reciever"
+              }`}
+            >
+              <span className="chat__name">{message.name}</span>
+              {message.message}
+              <span className="chat__timestamp">
+                <span>
+                  {new Date(
+                    message.timestamp ? message.timestamp.toDate() : null
+                  )?.toDateString()}
+                  {", "}
+                  {new Date(
+                    message.timestamp ? message.timestamp.toDate() : null
+                  ).toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  })}
+                </span>
+              </span>
+            </p>
+          );
+        })}
         {/* <p style={{ height: "40px" }} ref={messagesEndRef}></p> */}
       </div>
       <div className="chat__footer">
